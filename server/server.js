@@ -1,28 +1,31 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
-import bcrypt from 'bcryptjs';
 import authRoutes from './routes/authRoutes.js';
 import itemRoutes from './routes/itemRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { registerSocket } from './socket.js';
 
-dotenv.config();
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET must be set in production');
+}
+
+// Remove any trailing slash so it matches the browser's Origin header exactly
+const CLIENT_URL = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: CLIENT_URL,
     methods: ['GET', 'POST']
   }
 });
 
-app.use(cors());
+app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json({ limit: '2mb' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
@@ -38,5 +41,5 @@ app.get('/api/health', (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Campus Lost & Found API started at http://localhost:${PORT}`);
+  console.log(`Campus Lost & Found API started on port ${PORT}`);
 });
