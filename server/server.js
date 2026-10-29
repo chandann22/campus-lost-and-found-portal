@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET must be set in production');
 }
 
-// Remove any trailing slash so it matches the browser's Origin header exactly
+// Strip any trailing slash so it matches the browser's Origin header exactly
 const CLIENT_URL = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '');
 
 const app = express();
