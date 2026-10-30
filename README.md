@@ -4,7 +4,7 @@ A complete MERN-style lost and found campus portal with authentication, protecte
 
 Backend url on render: https://campus-lost-and-found-portal-rqbr.onrender.com
 <br>
-Frontend on vercel: https://campus-lost-and-found-portal-19p7oh95e-cs-a5b1.vercel.app/login
+Frontend on vercel: https://campus-lost-and-found-portal-nine.vercel.app/login
 ## Features
 
 - JWT register/login flow.
